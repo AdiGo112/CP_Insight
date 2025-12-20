@@ -1,16 +1,80 @@
-# React + Vite
+# CP Insight (Codeforces)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A personal dashboard for **competitive programming lovers**, focused on **reality, not vanity**.
 
-Currently, two official plugins are available:
+This project analyzes your **Codeforces journey** at the **problem level**, not submission spam or fake motivation numbers.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+No LeetCode. Never. Why? Because I hate leetcode.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## What this is
 
-## Expanding the ESLint configuration
+A **personal CP diary** where users can:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+* Track **problems attempted**
+* See how many problems they actually **solved vs struggled**
+* Analyze repeated **WA / TLE / MLE**
+* Identify **weak topics**
+* Maintain **notes per problem**
+* Build personalized problem lists
+
+This is not:
+
+* A problem solver
+* An algorithm generator
+* A leaderboard clone
+
+It’s a mirror.
+
+---
+
+## Current Features
+
+### Dashboard
+
+* Fetches last **100 Codeforces submissions**
+* Collapses submissions into **unique problems**
+* Shows:
+
+  * Problems attempted
+  * Solved vs unsolved
+  * Attempts per problem
+  * Final verdict per problem
+  * First time you saw the problem
+
+---
+
+## Tech Stack
+
+* Frontend: Vanilla JS
+* Backend: Node.js
+* Database: MongoDB
+* API: Codeforces API
+
+Simple on purpose.
+
+---
+
+## Core Logic
+
+Raw CF submissions → collapsed into problems using:
+
+* attempts count
+* solved / unsolved
+* worst verdict severity
+* first seen timestamp
+
+This makes analysis meaningful instead of noisy.
+
+---
+
+## Planned Features
+
+* Notes per problem (multiple notes allowed)
+* WA / TLE pattern analysis
+* Personal problem lists
+* Long-term CP journey tracking
+* Brutal weekly/monthly reality checks
+
+---
