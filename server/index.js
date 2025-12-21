@@ -2,10 +2,16 @@ import express from "express";
 import fetch from "node-fetch";
 import cors from "cors";
 import { usersCollection } from "./db.js";  // MongoDB connection
+import problemRouter from "./problem.js";
+
+
 
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use("/api", problemRouter);
+app.use("/api/problem", problemRouter);
+
 
 const PORT = 3000;
 

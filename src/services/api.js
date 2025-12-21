@@ -38,6 +38,13 @@ export async function syncHandle(handle) {
   }).then(res => res.submissions);
 }
 
+export async function getProblem(handle, pid) {
+  const res = await fetch(`/api/problem/${handle}/${pid}`);
+  if (!res.ok) throw new Error("Failed to load problem");
+  return res.json();
+}
+
+
 // Placeholder functions for future features
 export async function getStats(handle) {
   return request(`/stats/${handle}`);
