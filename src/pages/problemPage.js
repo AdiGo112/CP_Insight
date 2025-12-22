@@ -1,4 +1,4 @@
-import { getProblem } from "../services/api.js";
+import { getProblem, getNotes } from "../services/api.js";
 import { renderNotesSection } from "../components/notesSection.js";
 
 export async function renderProblemPage(container) {
@@ -15,10 +15,8 @@ export async function renderProblemPage(container) {
 
   container.innerHTML = "<p>Loading problem...</p>";
 
- // try {
+  try {
     const data = await getProblem(ctx.handle, pid);
-    console.log(data);
-
     const p = data.problem;
 
     container.innerHTML = `
@@ -46,30 +44,36 @@ export async function renderProblemPage(container) {
 
         <h3>Submissions</h3>
         <ul>
-          ${data.submissions.map(s => `
+          ${data.submissions
+            .map(
+              s => `
             <li>
               ${s.verdict || "?"} |
               ${s.language || "?"} |
               ${s.runtime ?? "-"}ms |
               ${new Date(s.time * 1000).toLocaleString("en-IN")}
             </li>
-          `).join("")}
+          `
+            )
+            .join("")}
         </ul>
 
         <hr>
-
-        <h3>Your Notes</h3>
         <div id="notesSection"></div>
       </div>
     `;
 
+    // ✅ FETCH NOTES FROM BACKEND
+    const notes = await getNotes(ctx.handle, pid);
+
     renderNotesSection(
       document.getElementById("notesSection"),
-      pid
+      notes,
+      pid,
+      ctx.handle
     );
-
-  //} catch (err) {
-   // container.innerHTML = "<p>Failed to load problem. (ProblemPage)</p>";
-   // console.error(err);
-  //}
+  } catch (err) {
+    container.innerHTML = "<p>Failed to load problem. (ProblemPage)</p>";
+    console.error(err);
+  }
 }

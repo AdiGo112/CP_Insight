@@ -13,3 +13,6 @@ console.log("MongoDB connected");
 
 const db = client.db("cf_insight");
 export const usersCollection = db.collection("users");
+
+export const notesCollection = db.collection("notes");
+

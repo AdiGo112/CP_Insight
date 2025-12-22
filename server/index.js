@@ -3,15 +3,14 @@ import fetch from "node-fetch";
 import cors from "cors";
 import { usersCollection } from "./db.js";  // MongoDB connection
 import problemRouter from "./problem.js";
-
+import notesRouter from "./notes.js";
 
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use("/api", problemRouter);
 app.use("/api/problem", problemRouter);
-
+app.use("/api/notes", notesRouter);
 
 const PORT = 3000;
 
