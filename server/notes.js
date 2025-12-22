@@ -15,6 +15,31 @@ router.get("/:handle/:pid", async (req, res) => {
   res.json(notes);
 });
 
+// GET all notes for a user (grouped by problem)
+router.get("/:handle", async (req, res) => {
+  const { handle } = req.params;
+
+  const user = await usersCollection.findOne(
+    { handle },
+    { projection: { notes: 1 } }
+  );
+
+  if (!user || !user.notes) {
+    return res.json([]);
+  }
+
+  // Flatten notes into a list
+  const result = Object.entries(user.notes).map(
+    ([problemId, notes]) => ({
+      problemId,
+      notes
+    })
+  );
+  console.log("Notes fetched for user:", handle, result);
+
+  res.json(result);
+});
+
 // ADD note to a specific problem
 router.post("/", async (req, res) => {
   const { handle, pid, text } = req.body;

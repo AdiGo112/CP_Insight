@@ -73,6 +73,11 @@ export async function deleteNote(handle, pid, noteId) {
   });
 }
 
+// Fetch all notes for a user
+export async function getAllNotes(handle) {
+  return request(`/api/notes/${handle}`);
+}
+
 
 // ---------------- FUTURE FEATURES ----------------
 

@@ -25,7 +25,7 @@ export async function renderDashboard(container) {
             <th>Tags</th>
             <th>Attempts</th>
             <th>Final Verdict</th>
-            <th>First Attempt</th>
+            <th>Most Recent Attempt</th>
           </tr>
         </thead>
         <tbody id="submissionsBody">
@@ -56,7 +56,7 @@ export async function renderDashboard(container) {
       const tags = p.tags.join(", ") || "N/A";
       const attempts = p.attempts;
       const verdict = p.finalVerdict;
-      const firstSeen = new Date(p.firstSeen * 1000).toLocaleString("en-IN", {
+      const firstSeen = new Date(p.lastSeen * 1000).toLocaleString("en-IN", {
         day: "2-digit",
         month: "2-digit",
         year: "numeric",
