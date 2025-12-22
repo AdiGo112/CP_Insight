@@ -86,9 +86,6 @@ export async function renderDashboard(container) {
           problemID: p.problemID // this is the key for the problem in DB
         })
       );
-
-        
-
         // SPA navigation
         location.hash = `#/problem?pid=${p.problemID}`;
       });

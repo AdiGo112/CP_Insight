@@ -15,8 +15,10 @@ export async function renderProblemPage(container) {
 
   container.innerHTML = "<p>Loading problem...</p>";
 
-  try {
+ // try {
     const data = await getProblem(ctx.handle, pid);
+    console.log(data);
+
     const p = data.problem;
 
     container.innerHTML = `
@@ -35,9 +37,9 @@ export async function renderProblemPage(container) {
           <strong>Attempts:</strong> ${data.attempts} <br>
           <strong>Status:</strong> ${data.solved ? "Solved" : "Unsolved"} <br>
           <strong>First Attempt:</strong>
-          ${new Date(data.firstSeen * 1000).toLocaleString("en-IN")} <br>
+          ${new Date(data.firstAttempt * 1000).toLocaleString("en-IN")} <br>
           <strong>Last Attempt:</strong>
-          ${new Date(data.lastSeen * 1000).toLocaleString("en-IN")}
+          ${new Date(data.lastAttempt * 1000).toLocaleString("en-IN")}
         </p>
 
         <hr>
@@ -66,8 +68,8 @@ export async function renderProblemPage(container) {
       pid
     );
 
-  } catch (err) {
-    container.innerHTML = "<p>Failed to load problem.</p>";
-    console.error(err);
-  }
+  //} catch (err) {
+   // container.innerHTML = "<p>Failed to load problem. (ProblemPage)</p>";
+   // console.error(err);
+  //}
 }

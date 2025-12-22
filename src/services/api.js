@@ -39,9 +39,13 @@ export async function syncHandle(handle) {
 }
 
 export async function getProblem(handle, pid) {
+  console.log("Reached here api.js 42");
   const res = await fetch(`/api/problem/${handle}/${pid}`);
-  if (!res.ok) throw new Error("Failed to load problem");
+  console.log("Fetched problem data api.js 44", res);
+  if (!res.ok) throw new Error("Failed to load problem (API).");
+  
   return res.json();
+  
 }
 
 

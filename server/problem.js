@@ -9,7 +9,7 @@ const router = express.Router();
  */
 router.get("/:handle/:pid", async (req, res) => {
   const { handle, pid } = req.params;
-
+console.log("API Request for problem:", handle, pid);
   try {
     // 1. Load user from MongoDB
     const user = await usersCollection.findOne({ handle });
