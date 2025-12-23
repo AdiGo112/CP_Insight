@@ -23,6 +23,10 @@ async function request(endpoint, options = {}) {
 }
 
 /* ---------------- API FUNCTIONS ---------------- */
+export async function getCurrentHandle() {
+  return request("/current-handle").then(res => res.handle);
+}
+
 
 // Fetch submissions for a handle
 export async function getUserSubmissions(handle) {
@@ -40,8 +44,8 @@ export async function syncHandle(handle) {
 }
 
 // Fetch single problem + user-specific data
-export async function getProblem(handle, pid) {
-  return request(`/api/problem/${handle}/${pid}`);
+export async function getProblem(pid) {
+  return request(`/api/problem/${pid}`);
 }
 
 // ---------------- NOTES API ----------------

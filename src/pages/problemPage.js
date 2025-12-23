@@ -1,14 +1,22 @@
-import { getProblem, getNotes } from "../services/api.js";
+import { getProblem, getNotes, getCurrentHandle } from "../services/api.js";
 import { renderNotesSection } from "../components/notesSection.js";
 
 export async function renderProblemPage(container) {
+  // Fetch the universal handle from the server
+  let handle;
+  try {
+    handle = await getCurrentHandle(); // you need an endpoint like /api/handle
+  } catch (err) {
+    container.innerHTML = "<p>Failed to load handle from server.</p>";
+    console.error(err);
+    return;
+  }
+
   const query = location.hash.split("?")[1];
   const params = new URLSearchParams(query);
   const pid = params.get("pid");
 
-  const ctx = JSON.parse(localStorage.getItem("currentProblem"));
-
-  if (!pid || !ctx) {
+  if (!pid || !handle) {
     container.innerHTML = "<p>Invalid problem context.</p>";
     return;
   }
@@ -16,7 +24,7 @@ export async function renderProblemPage(container) {
   container.innerHTML = "<p>Loading problem...</p>";
 
   try {
-    const data = await getProblem(ctx.handle, pid);
+    const data = await getProblem(pid);
     const p = data.problem;
 
     container.innerHTML = `
@@ -63,14 +71,13 @@ export async function renderProblemPage(container) {
       </div>
     `;
 
-    // ✅ FETCH NOTES FROM BACKEND
-    const notes = await getNotes(ctx.handle, pid);
+    const notes = await getNotes(handle, pid);
 
     renderNotesSection(
       document.getElementById("notesSection"),
       notes,
       pid,
-      ctx.handle
+      handle
     );
   } catch (err) {
     container.innerHTML = "<p>Failed to load problem. (ProblemPage)</p>";

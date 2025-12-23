@@ -15,6 +15,10 @@ app.use("/api/notes", notesRouter);
 const PORT = 3000;
 
 // ----------------- SYNC ENDPOINT -----------------
+let currentHandle = null;
+app.get("/current-handle", (req, res) => {
+  res.json({ handle: currentHandle });
+});
 app.post("/sync", async (req, res) => {
   const { handle } = req.body;
   if (!handle) return res.status(400).json({ error: "Handle required" });
@@ -34,6 +38,7 @@ app.post("/sync", async (req, res) => {
       { $set: { submissions: data.result, lastSynced: new Date() } },
       { upsert: true }
     );
+    currentHandle = handle;
 
     res.json({ message: "Sync complete", submissions: data.result });
   } catch (err) {

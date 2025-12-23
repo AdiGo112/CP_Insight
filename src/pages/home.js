@@ -16,15 +16,10 @@ export function renderHome(container) {
     if (!handle) return alert("Enter handle");
 
     try {
-      await syncHandle(handle); // calls your server
-      // In your Home page after syncing
-      window.currentCFHandle = handle;
-      localStorage.setItem("currentCFHandle", handle);
-
+      await syncHandle(handle);
       location.hash = "#/dashboard";
     } catch (err) {
       alert(err.message);
     }
-    
   };
 }

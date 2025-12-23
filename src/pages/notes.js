@@ -1,5 +1,3 @@
-// components/allNotesPage.js
-
 import { getAllNotes } from "../services/api.js";
 
 export async function renderNotes(container, handle) {
@@ -14,10 +12,7 @@ export async function renderNotes(container, handle) {
   const listContainer = container.querySelector("#notesList");
 
   try {
-    console.log("17 clear", handle);
     const allNotes = await getAllNotes(handle);
-
-    console.log("19 clear", allNotes);
 
     if (!allNotes || allNotes.length === 0) {
       listContainer.innerHTML = "<p>No notes yet.</p>";
@@ -25,26 +20,32 @@ export async function renderNotes(container, handle) {
     }
 
     listContainer.innerHTML = allNotes
-      .map(({ problemId, notes }) => `
+      .map(({ problemId, problemName, notes }) => `
         <div class="problem-notes">
           <h3>
-            <a href="#/problem?pid=${problemId}">${problemId}</a>
-            (${notes.length} note${notes.length > 1 ? "s" : ""})
+            <a href="#/problem?pid=${problemId}">
+              ${problemId}-${problemName}
+            </a>
+            <span>
+              · ${notes.length} note${notes.length > 1 ? "s" : ""}
+            </span>
           </h3>
+
           <ul>
             ${notes
               .map(
                 n =>
-                  `<li>${n.text.slice(0, 50)}${
-                    n.text.length > 50 ? "..." : ""
-                  }</li>`
+                  `<li>
+                    ${n.text.slice(0, 50)}${
+                      n.text.length > 50 ? "…" : ""
+                    }
+                  </li>`
               )
               .join("")}
           </ul>
         </div>
       `)
       .join("");
-
 
   } catch (err) {
     console.error("Failed to fetch all notes:", err);

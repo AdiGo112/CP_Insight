@@ -1,9 +1,8 @@
-import { getUserSubmissions } from "../services/api.js";
+import { getUserSubmissions, getCurrentHandle } from "../services/api.js";
 import { collapseSubmissions } from "../utils/problemAnalyzer.js";
 
 export async function renderDashboard(container) {
-  const handle =
-    window.currentCFHandle || localStorage.getItem("currentCFHandle");
+  const handle = await getCurrentHandle();
 
   if (!handle) {
     container.innerHTML = "<p>No handle selected. Go back to home.</p>";
@@ -41,7 +40,8 @@ export async function renderDashboard(container) {
     tbody.innerHTML = "";
 
     if (!submissions.length) {
-      tbody.innerHTML = `<tr><td colspan="6">No submissions found. Sync first!</td></tr>`;
+      tbody.innerHTML =
+        `<tr><td colspan="6">No submissions found. Sync first!</td></tr>`;
       return;
     }
 
@@ -51,51 +51,26 @@ export async function renderDashboard(container) {
     problems.forEach(p => {
       if (p.solved) solvedCount++;
 
-      const problemName = `${p.problemID} - ${p.name}`;
-      const rating = p.rating || "N/A";
-      const tags = p.tags.join(", ") || "N/A";
-      const attempts = p.attempts;
-      const verdict = p.finalVerdict;
-      const firstSeen = new Date(p.lastSeen * 1000).toLocaleString("en-IN", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit",
-        second: "2-digit"
-      });
-
       const tr = document.createElement("tr");
       tr.style.cursor = "pointer";
 
       tr.innerHTML = `
-        <td class="problem-link">${problemName}</td>
-        <td>${rating}</td>
-        <td>${tags}</td>
-        <td>${attempts}</td>
-        <td>${verdict}</td>
-        <td>${firstSeen}</td>
+        <td>${p.problemID} - ${p.name}</td>
+        <td>${p.rating || "N/A"}</td>
+        <td>${p.tags.join(", ") || "N/A"}</td>
+        <td>${p.attempts}</td>
+        <td>${p.finalVerdict}</td>
+        <td>${new Date(p.lastSeen * 1000).toLocaleString("en-IN")}</td>
       `;
 
       tr.addEventListener("click", () => {
-        // persist context (good instinct, keep this)
-      localStorage.setItem(
-        "currentProblem",
-        JSON.stringify({
-          handle,
-          problemID: p.problemID // this is the key for the problem in DB
-        })
-      );
-        // SPA navigation
         location.hash = `#/problem?pid=${p.problemID}`;
       });
-
 
       tbody.appendChild(tr);
     });
 
-    const summaryDiv = document.getElementById("summary");
-    summaryDiv.innerHTML = `
+    document.getElementById("summary").innerHTML = `
       <p><strong>In last ${submissions.length} attempts</strong></p>
       <p>
         <strong>Problems attempted:</strong> ${problems.length} |
@@ -103,10 +78,9 @@ export async function renderDashboard(container) {
         <strong>Unsolved:</strong> ${problems.length - solvedCount}
       </p>
     `;
-
   } catch (err) {
-    const tbody = document.getElementById("submissionsBody");
-    tbody.innerHTML = `<tr><td colspan="6">Failed to load problems.</td></tr>`;
     console.error(err);
+    document.getElementById("submissionsBody").innerHTML =
+      `<tr><td colspan="6">Failed to load problems.</td></tr>`;
   }
 }
