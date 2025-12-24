@@ -60,7 +60,7 @@ export async function renderDashboard(container) {
         <td>${p.tags.join(", ") || "N/A"}</td>
         <td>${p.attempts}</td>
         <td>${p.finalVerdict}</td>
-        <td>${new Date(p.lastSeen * 1000).toLocaleString("en-IN")}</td>
+        <td>${new Date(p.lastSeen * 1000).toLocaleString("en-IN", { hour12: false })}</td>
       `;
 
       tr.addEventListener("click", () => {

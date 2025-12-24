@@ -43,28 +43,56 @@ export async function renderProblemPage(container) {
           <strong>Attempts:</strong> ${data.attempts} <br>
           <strong>Status:</strong> ${data.solved ? "Solved" : "Unsolved"} <br>
           <strong>First Attempt:</strong>
-          ${new Date(data.firstAttempt * 1000).toLocaleString("en-IN")} <br>
+          ${new Date(data.firstAttempt * 1000).toLocaleString("en-IN", { hour12: false })} <br>
           <strong>Last Attempt:</strong>
-          ${new Date(data.lastAttempt * 1000).toLocaleString("en-IN")}
+          ${new Date(data.lastAttempt * 1000).toLocaleString("en-IN", { hour12: false })} <br>
         </p>
 
         <hr>
 
         <h3>Submissions</h3>
-        <ul>
-          ${data.submissions
-            .map(
-              s => `
-            <li>
-              ${s.verdict || "?"} |
-              ${s.language || "?"} |
-              ${s.runtime ?? "-"}ms |
-              ${new Date(s.time * 1000).toLocaleString("en-IN")}
-            </li>
-          `
-            )
-            .join("")}
-        </ul>
+
+<table
+  class="submissions-table"
+  style="
+    border-collapse: separate;
+    border-spacing: 25px 0;
+    text-align: left;
+  "
+>
+
+  <thead>
+    <tr>
+      <th>Verdict</th>
+      <th>Language</th>
+      <th>Runtime</th>
+      <th>Memory</th>
+      <th>Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${data.submissions.map(s => {
+      const verdict = s.verdict || "?";
+      const language = s.language || "?";
+      const runtime = s.runtime != null ? `${s.runtime} ms` : "-";
+      const memory = s.memory != null ? `${s.memory / 1024} KB` : "-";
+      const time = new Date(s.time * 1000).toLocaleString("en-IN", {
+        hour12: false
+      });
+
+      return `
+        <tr>
+          <td>${verdict}</td>
+          <td>${language}</td>
+          <td>${runtime}</td>
+          <td>${memory}</td>
+          <td>${time}</td>
+        </tr>
+      `;
+    }).join("")}
+  </tbody>
+</table>
+
 
         <hr>
         <div id="notesSection"></div>

@@ -95,13 +95,28 @@ router.delete("/:noteId", async (req, res) => {
   const { noteId } = req.params;
   const { handle, pid } = req.body;
 
-  if (!handle || !pid) return res.status(400).json({ error: "Missing fields" });
+  if (!handle || !pid) {
+    return res.status(400).json({ error: "Missing fields" });
+  }
 
+  // Remove the note
   await usersCollection.updateOne(
     { handle },
-    { $pull: { [`notes.${pid}`]: { _id: new ObjectId(noteId) } } }
+    {
+      $pull: {
+        [`notes.${pid}`]: { _id: new ObjectId(noteId) }
+      }
+    }
   );
-
+  // Remove the pid key IF the array is empty
+  await usersCollection.updateOne(
+    { handle, [`notes.${pid}`]: { $size: 0 } },
+    {
+      $unset: {
+        [`notes.${pid}`]: ""
+      }
+    }
+  );
   res.json({ success: true });
 });
 
