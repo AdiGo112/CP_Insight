@@ -1,10 +1,12 @@
 # CP Insight (Codeforces)
 
+[![CI](https://github.com/AdiGo112/CP_Insight/actions/workflows/ci.yml/badge.svg)](https://github.com/AdiGo112/CP_Insight/actions/workflows/ci.yml)
+
 A personal dashboard for **competitive programming lovers**, focused on **reality, not vanity**.
 
 This project analyzes your **Codeforces journey** at the **problem level**, not submission spam or fake motivation numbers.
 
-No LeetCode. Never. Why? Because I hate leetcode.
+Built for Codeforces on purpose: instead of counting solved problems, it shows where you actually struggle (repeated verdicts, weak topics, problems that took many attempts), so practice goes where it helps most.
 
 ---
 
